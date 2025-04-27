@@ -9,12 +9,33 @@ export function initializeForm(config: FormConfig): void {
     const successMessage = document.getElementById('successMessage');
     
     if (form && successMessage) {
-      form.addEventListener('submit', async (e) => {
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
         
         if (validateForm(form)) {
-          await submitForm(form, successMessage, config);
+          // Remove the event listener temporarily to allow form submission
+          const currentSubmitHandler = form.onsubmit;
+          form.onsubmit = null;
+          
+          // Submit the form
+          setTimeout(() => {
+            form.submit();
+            // Restore the event listener
+            form.onsubmit = currentSubmitHandler;
+          }, 0);
         }
+      });
+
+      // Clear errors when user starts typing
+      form.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('input', () => {
+          const element = input as HTMLInputElement | HTMLTextAreaElement;
+          const errorElement = document.getElementById(`${element.id}-error`);
+          element.classList.remove('invalid');
+          if (errorElement) {
+            errorElement.style.display = 'none';
+          }
+        });
       });
     }
   });
@@ -22,7 +43,7 @@ export function initializeForm(config: FormConfig): void {
 
 function validateForm(form: HTMLFormElement): boolean {
   let isValid = true;
-  const inputs = form.querySelectorAll('input, textarea');
+  const inputs = form.querySelectorAll('input[required], textarea[required]');
   
   inputs.forEach(input => {
     const element = input as HTMLInputElement | HTMLTextAreaElement;
@@ -32,7 +53,7 @@ function validateForm(form: HTMLFormElement): boolean {
       isValid = false;
       element.classList.add('invalid');
       if (errorElement) {
-        errorElement.textContent = `${element.name} is required`;
+        errorElement.textContent = `${element.name.charAt(0).toUpperCase() + element.name.slice(1)} is required`;
         errorElement.style.display = 'block';
       }
     } else if (element.type === 'email' && !isValidEmail(element.value)) {
@@ -56,38 +77,4 @@ function validateForm(form: HTMLFormElement): boolean {
 function isValidEmail(email: string): boolean {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
-}
-
-async function submitForm(form: HTMLFormElement, successMessage: HTMLElement, config: FormConfig): Promise<void> {
-  const formData = new FormData(form);
-  const body = {
-    name: formData.get('name'),
-    email: formData.get('email'),
-    message: formData.get('message'),
-    _subject: 'New Portfolio Contact',
-    _captcha: 'false'
-  };
-
-  try {
-    const response = await fetch(config.endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
-
-    if (response.ok) {
-      form.reset();
-      successMessage.style.display = 'block';
-      setTimeout(() => {
-        successMessage.style.display = 'none';
-      }, config.successTimeout);
-    } else {
-      throw new Error(`Form submission failed: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
 }

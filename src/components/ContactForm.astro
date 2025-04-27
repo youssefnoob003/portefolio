@@ -17,7 +17,11 @@ const {
 } = Astro.props;
 ---
 
-<form class="contact-form" id={id}>
+<form class="contact-form" id={id} action={FORM_CONFIG.ENDPOINT} method="POST">
+  <input type="hidden" name="_subject" value="New Portfolio Contact Message" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_next" id="formRedirect" />
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" id="name" name="name" required />
@@ -110,10 +114,32 @@ const {
   });
 </script>
 
-<script define:vars={{ formConfig: FORM_CONFIG }}>
-  import { initializeForm } from '../scripts/components/form-handler';
-  initializeForm({
-    endpoint: formConfig.ENDPOINT,
-    successTimeout: formConfig.SUCCESS_TIMEOUT
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const redirectInput = document.getElementById('formRedirect') as HTMLInputElement;
+    if (redirectInput) {
+      redirectInput.value = `${window.location.origin}${window.location.pathname}?submitted=true`;
+    }
+
+    // Check for success message immediately and after a short delay
+    const checkForSuccess = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('submitted')) {
+        const successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+          successMessage.classList.add('show');
+          setTimeout(() => {
+            successMessage.classList.remove('show');
+            // Clean up the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }, 5000);
+        }
+      }
+    };
+
+    // Check immediately
+    checkForSuccess();
+    // Check again after a short delay to ensure DOM is ready
+    setTimeout(checkForSuccess, 100);
   });
 </script>

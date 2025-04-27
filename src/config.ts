@@ -21,6 +21,6 @@ export const DATE_CONFIG = {
 };
 
 export const FORM_CONFIG = {
-  ENDPOINT: 'https://formsubmit.co/gumball.daruine@gmail.com',
+  ENDPOINT: 'https://formsubmit.co/youssef.charfeddine@insat.ucar.tn',
   SUCCESS_TIMEOUT: 5000
 };
