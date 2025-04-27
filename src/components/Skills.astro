@@ -1,0 +1,76 @@
+---
+import '../styles/components/shared/sections.css';
+
+interface SkillItem {
+  title: string;
+  items: string[];
+}
+
+const skills: SkillItem[] = [
+  {
+    title: "Network Engineering",
+    items: ["Infrastructure Design", "Network Security", "Protocol Analysis"]
+  },
+  {
+    title: "System Administration",
+    items: ["Server Management", "Automation", "Performance Optimization"]
+  },
+  {
+    title: "Cybersecurity",
+    items: ["Penetration Testing", "Vulnerability Assessment", "Security Hardening"]
+  },
+  {
+    title: "CTF Experience",
+    items: ["Challenge Writing", "Active Player", "Security Research"]
+  }
+];
+---
+
+<section class="section" id="skills">
+  <h1 class="title">Skills & Expertise</h1>
+  <p class="subtitle">* System Administrator | Security Researcher | CTF Player</p>
+
+  <div class="skill-list">
+    {skills.map(skill => (
+      <div class="card skill-item">
+        <h3>* {skill.title}</h3>
+        {skill.items.map(item => <p>{item}</p>)}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+.skill-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.skill-item h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  transition: color 0.3s steps(3);
+}
+
+.skill-item:hover h3 {
+  color: var(--ctf-yellow);
+  text-shadow: 0 0 8px var(--ctf-yellow-glow);
+}
+
+.skill-item p {
+  color: var(--muted);
+  transition: color 0.3s steps(3);
+}
+
+.skill-item:hover p {
+  color: var(--text);
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+</style>

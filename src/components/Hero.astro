@@ -1,0 +1,29 @@
+---
+import '../styles/components/hero.css';
+
+interface Props {
+  id?: string;
+  messages: string[];
+  scrollPrompt?: string;
+  className?: string;
+}
+
+const { 
+  id = "hero", 
+  messages, 
+  scrollPrompt = "* Press [SCROLL] to continue",
+  className = ""
+} = Astro.props;
+
+const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+---
+
+<div class={`hero ${className}`} id={id}>
+  <h1 class="hero-text">{randomMessage}</h1>
+  <div class="scroll-prompt">{scrollPrompt}</div>
+</div>
+
+<script>
+  import { initializeHero } from '../scripts/components/hero';
+  document.addEventListener('DOMContentLoaded', initializeHero);
+</script> 

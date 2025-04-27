@@ -1,0 +1,246 @@
+
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-align: center;
+  position: relative;
+  text-shadow: 
+    2px 0 var(--surface),
+    -2px 0 var(--surface),
+    0 2px var(--surface),
+    0 -2px var(--surface),
+    1px 1px var(--surface),
+    -1px -1px var(--surface),
+    1px -1px var(--surface),
+    -1px 1px var(--surface),
+    4px 4px 0px var(--secondary);
+  image-rendering: pixelated;
+}
+
+.title::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--primary) 0,
+    var(--primary) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  image-rendering: pixelated;
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--primary) 0,
+    var(--primary) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  image-rendering: pixelated;
+}
+
+.skill-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+
+.skill-item:hover {
+  transform: translateY(-8px);
+  border-color: var(--ctf-yellow);
+  box-shadow: 
+    6px 6px 0 0 #000,
+    8px 8px 0 0 var(--ctf-yellow),
+    12px 12px 0 0 #000,
+    14px 14px 0 0 var(--ctf-yellow),
+    0 0 20px var(--ctf-yellow-glow);
+}
+
+.skill-item:hover::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid var(--ctf-yellow);
+  pointer-events: none;
+  animation: borderPulse 2s infinite;
+}
+
+@keyframes borderPulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+.skill-item h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  transition: color 0.3s steps(3);
+}
+
+.skill-item:hover h3 {
+  color: var(--ctf-yellow);
+  text-shadow: 0 0 8px var(--ctf-yellow-glow);
+}
+
+.skill-item p {
+  color: var(--muted);
+  transition: color 0.3s steps(3);
+}
+
+.skill-item:hover p {
+  color: var(--text);
+}
+
+.projects-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.projects-intro {
+  margin-bottom: 3rem;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.projects-intro p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.projects-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.action-button {
+  display: inline-block;
+  padding: 1rem 1rem;
+  background: var(--surface);
+  color: var(--primary);
+  text-decoration: none;
+  border: var(--pixel-border) solid var(--primary);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s steps(3);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  image-rendering: pixelated;
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.6),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+.action-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 255, 212, 0.1) 10px,
+    transparent 20px
+  );
+  transform: rotate(45deg);
+  animation: buttonGlow 3s steps(10) infinite;
+  opacity: 0;
+  mix-blend-mode: screen;
+  image-rendering: pixelated;
+}
+
+.action-button:hover {
+  background: var(--primary);
+  color: var(--main-bg);
+  transform: translateY(-2px);
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px var(--primary);
+}
+
+.action-button:hover::before {
+  opacity: 0.5;
+}
+
+.action-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.8),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.8),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.labs-button {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.labs-button:hover {
+  background: var(--secondary);
+  color: var(--main-bg);
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px var(--secondary);
+}
+
+.labs-button::before {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(111, 0, 255, 0.1) 10px,
+    transparent 20px
+  );
+}
+
+@keyframes buttonGlow {
+  0% {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  100% {
+    transform: translate(150%, 150%) rotate(45deg);
+  }
+}

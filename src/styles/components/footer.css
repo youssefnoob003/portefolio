@@ -1,0 +1,88 @@
+footer {
+  width: 100%;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background-color: rgb(0, 0, 0);
+  border-top: var(--pixel-border) solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
+  margin-top: 2rem;
+  opacity: 0.9;
+}
+
+.footer-text {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 2;
+}
+
+.footer-text span {
+  color: var(--ctf-yellow);
+  text-shadow: 
+    0 0 4px var(--ctf-yellow),
+    0 0 8px var(--ctf-yellow),
+    0 0 12px var(--ctf-yellow-glow),
+    0 0 16px var(--ctf-yellow-glow);
+  animation: textGlow 1.5s ease-in-out infinite;
+}
+
+.dog-image {
+  height: 150px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: all 0.3s steps(3);
+  border: 2px solid transparent;
+}
+
+.dog-image:hover {
+  content: url('/images/annoying2.gif');
+}
+
+@media (max-width: 768px) {
+  footer {
+    padding: 1.5rem 1rem;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    box-sizing: border-box;
+  }
+
+  .footer-text {
+    font-size: 0.7rem;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .dog-image {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  footer {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .footer-text {
+    font-size: 0.6rem;
+    line-height: 1.8;
+    max-width: 95%;
+  }
+
+  .dog-image {
+    height: 100px;
+  }
+}
+
+.preload-image {
+  display: none;
+}

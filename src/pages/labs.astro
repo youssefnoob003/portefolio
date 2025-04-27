@@ -1,0 +1,37 @@
+---
+import MainLayout from '@layouts/MainLayout.astro';
+import ProjectCard from '@components/pages/ProjectCard.astro';
+import '@styles/components/pages/projects.css';
+import '@styles/components/shared/grid.css';
+import '@styles/components/ctf/background.css';
+
+interface LabFrontmatter {
+  title: string;
+  date: string;
+  description: string;
+  technologies: string[];
+}
+
+const labs = await Astro.glob<LabFrontmatter>('../content/labs/*.md');
+
+const labList = labs.map(lab => ({
+  title: lab.frontmatter.title,
+  date: lab.frontmatter.date,
+  description: lab.frontmatter.description,
+  technologies: lab.frontmatter.technologies,
+  slug: lab.file.split('/').pop()?.replace('.md', ''),
+  href: `/lab-details/${lab.file.split('/').pop()?.replace('.md', '')}`
+}));
+
+---
+
+<MainLayout title="Labs - Network & Security Portfolio">
+  <div>
+    <h1 class="page-title">Laboratory Practice</h1>
+    <div>
+      {labList.map(lab => (
+        <ProjectCard project={lab} />
+      ))}
+    </div>
+  </div>
+</MainLayout>

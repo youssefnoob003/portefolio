@@ -1,0 +1,63 @@
+
+.content-wrapper {
+  width: 95%;
+  margin: auto;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-align: center;
+  position: relative;
+  text-shadow: 
+    2px 0 var(--surface),
+    -2px 0 var(--surface),
+    0 2px var(--surface),
+    0 -2px var(--surface),
+    1px 1px var(--surface),
+    -1px -1px var(--surface),
+    1px -1px var(--surface),
+    -1px 1px var(--surface),
+    4px 4px 0px var(--secondary);
+  image-rendering: pixelated;
+}
+
+.title::before,
+.title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--primary) 0,
+    var(--primary) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  image-rendering: pixelated;
+}
+
+.title::before {
+  top: -10px;
+}
+
+.title::after {
+  bottom: -10px;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 1.5rem !important;
+  }
+  .title::before,
+  .title::after {
+    width: 100px;
+  }
+  
+}

@@ -1,0 +1,83 @@
+---
+---
+<button id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+</button>
+
+<style>
+  .mobile-nav-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    background: rgba(10, 10, 10, 0.95);
+    border: 2px solid var(--primary);
+    padding: 0.8rem;
+    border-radius: 0;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 6px;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+      4px 4px 0 rgba(0, 0, 0, 0.8),
+      inset -2px -2px 0 rgba(0, 0, 0, 0.6),
+      inset 2px 2px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .bar {
+    width: 24px;
+    height: 2px;
+    background-color: var(--primary);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-nav-toggle:hover {
+    border-color: var(--ctf-yellow);
+    transform: translateY(-2px);
+    box-shadow: 
+      6px 6px 0 rgba(0, 0, 0, 0.8),
+      inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+      inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+      0 0 15px var(--ctf-yellow-glow);
+  }
+
+  .mobile-nav-toggle:hover .bar {
+    background-color: var(--ctf-yellow);
+    box-shadow: 0 0 8px var(--ctf-yellow-glow);
+  }
+
+  @media (max-width: 768px) {
+    .mobile-nav-toggle {
+      display: flex;
+      margin-top: 60px; /* Position below main nav */
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('mobileNavToggle');
+    const nav = document.querySelector('.challenge-nav') as HTMLElement;
+    
+    if (toggle && nav) {
+      toggle.addEventListener('click', () => {
+        nav.style.display = nav.style.display === 'none' || !nav.style.display ? 'block' : 'none';
+        toggle.classList.toggle('active');
+        
+        if (nav.style.display === 'block') {
+          nav.animate([
+            { opacity: 0, transform: 'translateY(-20px)' },
+            { opacity: 1, transform: 'translateY(0)' }
+          ], {
+            duration: 300,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            fill: 'forwards'
+          });
+        }
+      });
+    }
+  });
+</script>

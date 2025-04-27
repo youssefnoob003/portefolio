@@ -1,0 +1,111 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+import CTFSidebar from "../../../components/ctf/CTFSidebar.astro";
+import '../../../styles/components/ctf/layout.css';
+import '../../../styles/components/ctf/sidebar.css';
+import '../../../styles/components/ctf/challenge-card.css';
+import '../../../styles/components/ctf/responsive.css';
+import '../../../styles/components/ctf/background.css';
+import { DATE_CONFIG } from '../../../config';
+import MobileNavScript from '../../../components/MobileNavScript.astro';
+
+export async function getStaticPaths() {
+  const allEvents = await Astro.glob('../../../content/ctf-writeups/*.md');
+  const allChallenges = await Astro.glob('../../../content/ctf-writeups/**/*.md');
+  
+  const paths = [];
+  
+  for (const event of allEvents) {
+    const eventSlug = event.file.split('/').pop()?.replace('.md', '') || '';
+    
+    // Filter challenges for this event instead of using dynamic glob
+    const challenges = allChallenges.filter(challenge => {
+      const pathParts = challenge.file.split('/');
+      const parentDir = pathParts[pathParts.length - 2];
+      return parentDir === eventSlug && pathParts[pathParts.length - 1] !== `${eventSlug}.md`;
+    });
+    
+    for (const challenge of challenges) {
+      const challengeSlug = challenge.file.split('/').pop()?.replace('.md', '') || '';
+      
+      paths.push({
+        params: {
+          eventSlug,
+          challengeSlug
+        },
+        props: {
+          event,
+          challenge,
+          eventData: event.frontmatter
+        }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { event, challenge, eventData } = Astro.props;
+const { Content } = challenge;
+const params = Astro.params;
+
+// Get all tasks for this event to build the sidebar using static glob and filtering
+const allChallenges = await Astro.glob('../../../content/ctf-writeups/**/*.md');
+const allTasks = allChallenges.filter(task => {
+  const pathParts = task.file.split('/');
+  const parentDir = pathParts[pathParts.length - 2];
+  return parentDir === params.eventSlug && pathParts[pathParts.length - 1] !== `${params.eventSlug}.md`;
+});
+
+// Group tasks by category
+const tasksByCategory = {};
+
+allTasks.forEach(task => {
+  const category = task.frontmatter.category;
+  if (!tasksByCategory[category]) tasksByCategory[category] = [];
+  tasksByCategory[category].push({
+    ...task.frontmatter,
+    slug: task.file.split('/').pop()?.replace('.md', ''),
+    hasContent: true,
+    isCurrent: task.file.split('/').pop()?.replace('.md', '') === params.challengeSlug
+  });
+});
+
+// Handle potentially missing challenges property
+const challenges = eventData.challenges || [];
+
+// Default categories if no challenges are defined
+const defaultCategories = ["Web", "Misc", "Networks", "Forensics"];
+
+// Add dummy challenges to categories that have no real challenges
+const categoriesToFill = Array.isArray(challenges) ? 
+  challenges.map(c => c.category) : 
+  defaultCategories;
+
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString(DATE_CONFIG.LOCALE, DATE_CONFIG.DEFAULT_FORMAT);
+}
+---
+
+<MainLayout title={`${challenge.frontmatter.title} - CTF Challenge`}>
+  <div class="ctf-event">
+    <CTFSidebar 
+      title={eventData.title}
+      categories={tasksByCategory}
+      eventSlug={params.eventSlug}
+    />
+    <main class="content">
+      <article class="challenge">
+        <div class="challenge-meta">
+          <span><strong>Challenge:</strong> {challenge.frontmatter.title}</span>
+          <span><strong>Category:</strong> {challenge.frontmatter.category}</span>
+          <span><strong>Difficulty:</strong> {challenge.frontmatter.difficulty}</span>
+          <span><strong>Points:</strong> {challenge.frontmatter.points}</span>
+        </div>
+        <Content />
+      </article>
+    </main>
+  </div>
+  <MobileNavScript />
+</MainLayout>

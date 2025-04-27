@@ -1,0 +1,64 @@
+---
+import MainLayout from '@layouts/MainLayout.astro';
+import ProjectCard from '@components/pages/ProjectCard.astro';
+import '@styles/components/pages/projects.css';
+import '@styles/components/shared/grid.css';
+import '@styles/components/projects/background.css';
+
+// Static projects data
+const projectsList = [
+  {
+    title: "SNMP monitoring app",
+    date: "2025-04-15",
+    description: "Network monitoring application that uses SNMP protocol to track and visualize network device metrics and performance data.",
+    technologies: ["Flask", "pysnmp", "SNMP"],
+    href: "https://github.com/youssefnoob003/Snmp-app"
+  },
+  {
+    title: "SIEMzello",
+    date: "2025-.-.",
+    description: "AI powered SIEM solution created as part of a university project. It's still in development and not yet available for public use.",
+    technologies: ["React/Vue.js", "Cisco", "Prometheus", "Grafana"],
+    href: "https://github.com/SIEMZello"
+  },
+  {
+    title: "Personal Portfolio",
+    date: "2025-04-25",
+    description: "This peosonal porfolio is my own work, showcasing my skills and projects. It is built mainly using astro framework.",
+    technologies: ["Astro", "Tailwind CSS"],
+  },
+  {
+    title: "Carya.tn",
+    date: "2024-02-15",
+    description: "Car rental platform designed to make your car rental experience seamless and enjoyable.",
+    technologies: ["PHP", "Symphony", "MySQL"],
+    href: "https://github.com/Jozziiff/Carya.tn"
+  },
+  {
+    title: "Book-Library",
+    date: "2022-08-15",
+    description: "Book management system that allows users to manage their book collections, including adding, editing, and deleting books.",
+    technologies: ["C#", ".NET Core", "MySQL", "Angular"],
+    href: "https://github.com/youssefnoob003/Book-Library"
+  },
+  {
+    title: "Tournament C",
+    date: "2022-02-15",
+    description: "Tournament management system that allows users to create, manage, and participate in tournaments.",
+    technologies: ["C#", "TSQL", "MySQL", ".NET"],
+    href: "https://github.com/youssefnoob003/Tournament-C-"
+  },
+  // Add more projects here as needed
+];
+
+---
+<MainLayout title="Projects - Network & Security Portfolio">
+  <div>
+    <h1 class="page-title">Featured Projects</h1>
+    <div>
+      {projectsList.map(project => (
+        <ProjectCard project={project} isLink={true} />
+      ))}
+    </div>
+  </div>
+</MainLayout>

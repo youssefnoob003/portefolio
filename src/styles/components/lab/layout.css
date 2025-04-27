@@ -1,0 +1,68 @@
+.ctf-event {
+  display: flex;
+  position: relative;
+  padding: 0;
+  width: 100%;
+}
+
+.content {
+  max-width: 75%;
+  flex: 1;
+  padding: 2rem 3rem;
+  background: rgba(10, 10, 10, 0.95);
+  border: var(--pixel-border) solid var(--primary);
+  border-radius: 0;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15rem;
+  margin-top: 2rem;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 3rem auto;
+}
+
+.challenge-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 255, 212, 0.2);
+}
+
+.challenge-meta span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@media (max-width: 768px) {
+  .ctf-event {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 1.5rem;
+    padding-top: 60px; /* Add space for button */
+    width: 75%;
+    min-height: auto;
+    max-width: 100%;
+  }
+  .content, .content code {
+    font-size: 0.5rem !important;
+  }
+  .content h1,
+  .content h2,
+  .content h3 {
+    font-size: 1rem !important;
+  }
+  .ctf-event + footer {
+    padding-left: 2rem;
+  }
+}

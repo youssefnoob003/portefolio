@@ -1,0 +1,108 @@
+/* Common section styles */
+.section {
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.75);
+  border: var(--pixel-border) solid var(--primary);
+  box-shadow: 0 0 15px rgba(0, 255, 212, 0.1);
+  scroll-margin-top: 80px;
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(5px);
+}
+
+/* Common title styles */
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-align: center;
+  position: relative;
+  text-shadow: 
+    2px 0 var(--surface),
+    -2px 0 var(--surface),
+    0 2px var(--surface),
+    0 -2px var(--surface),
+    1px 1px var(--surface),
+    -1px -1px var(--surface),
+    1px -1px var(--surface),
+    -1px 1px var(--surface),
+    4px 4px 0px var(--secondary);
+  image-rendering: pixelated;
+}
+
+/* Common pixel art decorations */
+.title::before,
+.title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--primary) 0,
+    var(--primary) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  image-rendering: pixelated;
+}
+
+.title::before {
+  top: -10px;
+}
+
+.title::after {
+  bottom: -10px;
+}
+
+/* Common card styles */
+.card {
+  padding: 1.5rem;
+  border: 4px solid var(--primary);
+  background-color: rgb(10, 10, 10);
+  box-shadow: 
+    4px 4px 0 0 var(--surface),
+    0 0 15px rgba(0, 255, 212, 0.1);
+  transition: all 0.3s steps(3);
+  color: var(--text);
+  backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 2;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: var(--ctf-yellow);
+  box-shadow: 
+    6px 6px 0 0 #000,
+    8px 8px 0 0 var(--ctf-yellow),
+    12px 12px 0 0 #000,
+    14px 14px 0 0 var(--ctf-yellow),
+    0 0 20px var(--ctf-yellow-glow);
+}
+
+/* Common glow animation */
+@keyframes borderPulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+/* Common grid layouts */
+.grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 2;
+}

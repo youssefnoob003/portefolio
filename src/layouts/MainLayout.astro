@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import '../styles/layouts/base.css';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_INFO } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  showNav?: boolean;
+  showFooter?: boolean;
+  isHomepage?: boolean;
+}
+
+const { 
+  title = SITE_INFO.TITLE,
+  description = SITE_INFO.DESCRIPTION,
+  image = "/images/og-image.jpg",
+  type = "website",
+  showNav = true,
+  showFooter = true,
+  isHomepage = false
+} = Astro.props;
+
+const canonicalUrl = Astro.url.href;
+const imageUrl = new URL(image, Astro.url).toString();
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={imageUrl} />
+  </head>
+  <body>
+    {showNav && <Navigation />}
+    
+    <main class={isHomepage ? "homepage-main" : ""}>
+      <div class="content-wrapper">
+        <slot />
+      </div>
+    </main>
+
+    {showFooter && <Footer />}
+  </body>
+</html>

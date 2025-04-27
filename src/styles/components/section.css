@@ -1,0 +1,10 @@
+.section {
+  margin-bottom: 4rem;
+}
+
+.section .title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--heading);
+  font-weight: bold;
+} 

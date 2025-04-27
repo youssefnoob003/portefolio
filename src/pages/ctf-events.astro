@@ -1,0 +1,54 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import '../styles/components/ctf/events-grid.css';
+import '../styles/components/ctf/background.css';
+import '../styles/components/shared/grid.css';
+import '../styles/components/pages/projects.css';
+import { DATE_CONFIG } from '../config';
+
+// Get all writeups and tasks
+const writeups = await Astro.glob('../content/ctf-writeups/*.md');
+const eventPromises = writeups.map(async (writeup) => {
+  const eventSlug = writeup.file.split('/').pop()?.replace('.md', '');
+  if (!eventSlug) return null;
+  
+  const allTasks = await Astro.glob('../content/ctf-writeups/**/*.md');
+  const eventTasks = allTasks.filter(task => 
+    task.file.includes(`${eventSlug}/`) && !task.file.endsWith(`${eventSlug}.md`)
+  );
+
+  return {
+    title: writeup.frontmatter.title,
+    date: writeup.frontmatter.date,
+    description: writeup.frontmatter.description,
+    challenges: writeup.frontmatter.challenges || [],
+    slug: eventSlug,
+    solvedCount: eventTasks.filter(t => t.frontmatter.status === 'solved').length,
+    totalPoints: eventTasks.reduce((sum, t) => sum + (t.frontmatter.points || 0), 0)
+  };
+});
+
+const events = (await Promise.all(eventPromises)).filter(Boolean);
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString(DATE_CONFIG.LOCALE, DATE_CONFIG.DEFAULT_FORMAT);
+}
+---
+
+<MainLayout title="CTF Events - Network & Security Portfolio">
+  <div>
+    <h1 class="page-title">Capture The Flag Events</h1>
+    <div>
+      {events.map((event) => (
+        <a href={`/ctf-writeups/${event.slug}`} class="grid-card has-writeup">
+          <h2 class="card-title">{event.title}</h2>
+          <time datetime={event.date} class="card-meta">{formatDate(event.date)}</time>
+          <p class="card-description">{event.description}</p>            
+          <div class="writeup-link">
+            <span class="view-writeup">View Writeups</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</MainLayout>

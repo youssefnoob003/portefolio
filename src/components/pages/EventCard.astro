@@ -1,0 +1,47 @@
+---
+import { DATE_CONFIG } from '../../config';
+
+interface Challenge {
+  name: string;
+  category: string;
+  difficulty: string;
+}
+
+interface Props {
+  event: {
+    title: string;
+    date: string;
+    description: string;
+    challenges: Challenge[];
+    slug: string;
+    solvedCount: number;
+    totalPoints: number;
+  };
+}
+
+const { event } = Astro.props;
+
+function formatDateLong(dateString: string): string {
+  return new Date(dateString).toLocaleDateString(DATE_CONFIG.LOCALE, DATE_CONFIG.DEFAULT_FORMAT);
+}
+---
+
+<a href={`/ctf-writeups/${event.slug}`} class="grid-card event-card">
+  <h2 class="card-title">{event.title}</h2>
+  <time class="card-meta" datetime={event.date}>
+    {formatDateLong(event.date)}
+  </time>
+  <p class="card-description">{event.description}</p>
+  <div class="card-footer">
+    <div class="challenges-preview">
+      Solved Challenges: {event.solvedCount}<br />
+      Total Points: {event.totalPoints}
+    </div>
+    <div class="challenges-categories">
+      Categories: {event.challenges.map((c) => c.category).join(', ')}
+    </div>
+    <div class="writeup-link">
+      <span class="view-writeup">View Writeups →</span>
+    </div>
+  </div>
+</a>

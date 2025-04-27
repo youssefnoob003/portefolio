@@ -1,0 +1,115 @@
+/* Project Page Layout */
+.project-page {
+  display: flex;
+  margin: 80px auto 0;
+  position: relative;
+  padding-bottom: 2rem;
+  max-width: 1200px;
+}
+
+.project-nav {
+  width: 280px;
+  padding: 2rem;
+  background-color: rgba(10, 15, 27, 0.98);
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 80px - 200px); /* Changed from height to max-height */
+  overflow-y: auto;
+  z-index: 1;
+  border-right: 4px solid var(--border);
+  box-shadow: 
+    4px 0 15px rgba(0, 255, 212, 0.05),
+    inset -5px 0 15px rgba(0, 255, 212, 0.02);
+  backdrop-filter: blur(5px);
+  margin-bottom: 2rem; /* Add margin to ensure space before footer */
+}
+
+.project-nav h2 {
+  color: var(--secondary);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(111, 0, 255, 0.5);
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(111, 0, 255, 0.3);
+  letter-spacing: 2px;
+}
+
+.project-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-nav li {
+  margin-bottom: 0.75rem;
+}
+
+.project-nav a {
+  color: rgba(245, 245, 245, 0.8);
+  text-decoration: none;
+  display: block;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  transition: all 0.2s steps(3);
+  position: relative;
+  border-left: 4px solid transparent;
+}
+
+.project-nav a:hover {
+  color: var(--primary);
+  background-color: rgba(0, 255, 212, 0.03);
+  border-left: 4px solid var(--border);
+  transform: translateX(4px);
+  text-shadow: 0 0 8px rgba(0, 255, 212, 0.2);
+}
+
+.project-nav a:hover::before {
+  content: '>';
+  position: absolute;
+  left: -15px;
+  color: var(--primary);
+  animation: blink 1s steps(2) infinite;
+}
+
+.content {
+  flex: 1;
+  padding: 0 3rem;
+  margin-left: 2rem;
+  background: rgba(10, 10, 10, 0.95);
+  border: var(--pixel-border) solid var(--primary);
+  border-radius: 4px;
+  backdrop-filter: blur(5px);
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.6),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .project-page {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .project-nav {
+    width: 100%;
+    position: relative;
+    top: 0;
+    height: auto;
+    margin-bottom: 2rem;
+    border-right: none;
+    border-bottom: 4px solid var(--border);
+  }
+  
+  .content {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}

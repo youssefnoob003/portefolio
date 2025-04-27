@@ -1,0 +1,127 @@
+/* Shared grid styles for projects, labs and CTF events */
+
+
+.grid-card {
+  margin: 2rem;
+  opacity: 1;
+  transform: none;
+  background: rgba(10, 10, 10, 0.95);
+  border: var(--pixel-border) solid #4287f5;
+  border-radius: 0;
+  padding: 2rem;
+  transition: all 0.3s steps(3);
+  position: relative;
+  backdrop-filter: blur(5px);
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.6),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: var(--text);
+  image-rendering: pixelated;
+
+}
+
+@media screen and (max-width: 768px) {
+
+  
+}
+
+.card-title {
+  color: var(--secondary);
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.4;
+  text-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.8),
+    0 0 10px var(--secondary-glow);
+  transition: all 0.3s steps(3);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--secondary);
+}
+
+@media screen and (max-width: 768px) {
+  .card-title {
+    font-size: 0.8rem;
+  }
+  .card-description {
+    font-size: 0.7rem !important;
+  } 
+}
+
+.card-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  background: rgba(111, 0, 255, 0.1);
+  border: 1px solid var(--secondary);
+  display: inline-block;
+  width: fit-content;
+}
+
+.card-description {
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.tech-preview {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(66, 135, 245, 0.2);
+  margin-top: auto;
+}
+
+.view-writeup {
+  display: inline-flex;
+  align-items: center;
+  color: var(--secondary);
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--secondary);
+  transition: all 0.2s steps(3);
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.grid-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--ctf-yellow);
+  box-shadow: 
+    6px 6px 0 0 #000,
+    8px 8px 0 0 var(--ctf-yellow),
+    12px 12px 0 0 #000,
+    14px 14px 0 0 var(--ctf-yellow),
+    0 0 20px var(--ctf-yellow-glow);
+}
+
+.grid-card:hover .card-title {
+  color: var(--ctf-yellow);
+  text-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.8),
+    0 0 15px var(--ctf-yellow-glow);
+  border-bottom-color: var(--ctf-yellow);
+}
+
+.grid-card:hover .view-writeup {
+  background: var(--ctf-yellow);
+  color: var(--surface);
+  border-color: var(--ctf-yellow);
+  transform: translateY(-2px);
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    0 0 15px var(--ctf-yellow-glow);
+}
+

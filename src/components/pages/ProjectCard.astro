@@ -1,0 +1,45 @@
+---
+import { DATE_CONFIG } from '../../config';
+import '../../styles/components/shared/grid.css';
+
+interface Props {
+  project: {
+    title: string;
+    date: string;
+    description: string;
+    technologies: string[];
+    slug?: string;
+    href?: string;
+  };
+  isLink?: boolean;
+}
+
+const { project, isLink = true } = Astro.props;
+const href = project.href || (project.slug ? `/project-details/${project.slug}` : undefined);
+
+function formatDateLong(dateString: string): string {
+  return new Date(dateString).toLocaleDateString(DATE_CONFIG.LOCALE, DATE_CONFIG.DEFAULT_FORMAT);
+}
+
+// Determine the tag based on whether it's a link or not
+const Element = isLink && href ? 'a' : 'div';
+---
+
+<Element 
+  href={isLink && href ? href : undefined} 
+  class="grid-card"
+>
+  <h2 class="card-title">{project.title}</h2>
+  <time datetime={project.date} class="card-meta">
+    {formatDateLong(project.date)}
+  </time>
+  <p class="card-description">{project.description}</p>
+  <div class="tech-preview">
+    Technologies: {project.technologies.join(', ')}
+  </div>
+  {isLink && href && (
+    <div class="writeup-link">
+      <span class="view-writeup">View Details</span>
+    </div>
+  )}
+</Element>

@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+  sections: {
+    title: string;
+    slug: string;
+  }[];
+  labSlug: string;
+}
+
+const { title, sections, labSlug } = Astro.props;
+---
+
+<aside class="challenge-nav">
+  <div class="challenge-nav-content">
+    <h2>{title}</h2>
+    <div class="category-section">
+      <a href="/labs" class="task-link">
+        <span>Back to Labs</span>
+      </a>
+      <ul class="challenge-list">
+        {sections.map((section) => (
+          <li>
+            <a href={`#${section.slug}`} class="task-link section-link" data-section={section.slug}>
+              {section.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</aside>
+

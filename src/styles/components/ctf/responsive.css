@@ -1,0 +1,49 @@
+@media (max-width: 768px) {
+  .ctf-event {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .challenge-nav {
+    display: none; /* Hidden by default on mobile */
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 140px; /* Position below mobile nav button */
+    max-height: calc(100vh - 140px);
+    margin-bottom: 0;
+    border-right: none;
+    border-top: 4px solid var(--border);
+    border-bottom: 4px solid var(--border);
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(15px);
+    z-index: 1090;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 1.5rem;
+    padding-top: 60px; /* Add space for button */
+    width: 100%;
+    min-height: auto;
+  }
+  
+  .ctf-event + footer {
+    padding-left: 2rem;
+  }
+
+  /* Animation styles for mobile nav toggle */
+  .mobile-nav-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .mobile-nav-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-nav-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}

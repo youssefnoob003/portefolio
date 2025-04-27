@@ -1,0 +1,54 @@
+---
+import '../styles/components/about.css';
+import Section from '@components/Section.astro';
+import SkillItem, { type SkillItemData } from '@components/SkillItem.astro';
+
+
+const skills: SkillItemData[] = [
+  {
+    title: "Networking, Systems & Web Development",
+    items: [
+      "Network Architecture & Configuration (CCNA+)",
+      "Protocol & Traffic Analysis",
+      "Linux/Windows Server Management",
+      "Multi-Protocol Setup (DNS, DHCP, etc.)",
+      "Web Development with Flask"
+    ]
+  },
+  {
+    title: "Cybersec, SOC & CTFs",
+    items: [
+      "SOC Operations & SIEM Monitoring",
+      "Log Analysis & Threat Detection",
+      "Basic Malware Analysis & Payload Creation",
+      "CTF Challenge Writing & Team Support",
+      "Security Research & Scripting"
+    ]
+  }
+];
+
+
+---
+
+<Section id="about" title="About Me">
+  <div class="about-content">
+    <div class="bio-section">
+      <p class="bio-paragraph">
+        Hi, I'm <span class="name-highlight">Youssef Charfeddine</span>, a network engineering student at <strong>INSAT</strong> with a strong focus on cybersecurity and system administration. I'm an active <strong>CTF player with <span class="name-highlight">CremeTartineFabuleuse</span></strong>, and have earned <strong>top placements in multiple national competitions</strong>.
+      </p>
+      <p class="bio-paragraph">
+        My experience spans <strong><span class="name-highlight">network configuration</span>, log and traffic analysis, SOC operations, and basic malware analysis</strong>, along with solid skills in <strong>system management and web development using Flask</strong>. Writing CTF tasks with Securinets INSAT over this year helped me hone my skills in <span class="name-highlight">cybersecurity and computer networks</span>. Whether it's building secure infrastructures or diving into threat detection, I'm always ready to learn, break, and defend.
+      </p>
+    </div>
+    
+    <div class="silly-container">
+      <img src="/images/silly.gif" alt="Silly animated gif" class="silly-animation" />
+    </div>
+
+    <div class="skills-grid">
+      {skills.map(skill => (
+        <SkillItem skill={skill} />
+      ))}
+    </div>
+  </div>
+</Section>

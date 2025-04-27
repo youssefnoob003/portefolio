@@ -1,0 +1,119 @@
+---
+import '../styles/components/contact-form.css';
+import { FORM_CONFIG } from '../config';
+
+interface Props {
+  id?: string;
+  submitButtonText?: string;
+  successMessage?: string;
+  showAnimatedCat?: boolean;
+}
+
+const {
+  id = "contactForm",
+  submitButtonText = "Send Message",
+  successMessage = "Message sent successfully!",
+  showAnimatedCat = true
+} = Astro.props;
+---
+
+<form class="contact-form" id={id}>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required />
+    <div class="error-message" id="name-error"></div>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required />
+    <div class="error-message" id="email-error"></div>
+  </div>
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+    <div class="error-message" id="message-error"></div>
+  </div>
+  <div class="form-submit">
+    <button type="submit" class="submit-btn">{submitButtonText}</button>
+    {showAnimatedCat && <img src="/images/cat.gif" alt="Animated cat" class="contact-cat" />}
+  </div>
+  <div class="success-message" id="successMessage">{successMessage}</div>
+</form>
+
+<div class="direct-contact">
+  <p>Or contact me via:</p>
+  <div class="contact-details">
+    <div class="contact-row">
+      <span class="contact-item" onclick="showCopyNotification('53922372')" style="cursor: pointer">number: 53922372</span>
+    </div>
+    <div class="contact-row">
+      <span class="contact-item">email: youssef.charfeddine@insat.ucar.tn</span>
+    </div>
+  </div>
+</div>
+
+<div class="social-links-container">
+  <a href="https://www.linkedin.com/in/youssef-charfeddine/" class="social-link" target="_blank" rel="noopener noreferrer">
+    <img src="/images/social/linkedin-pixel.png" alt="LinkedIn" class="social-icon" />
+  </a>
+  <a href="https://github.com/youssefnoob003" class="social-link" target="_blank" rel="noopener noreferrer">
+    <img src="/images/social/github-pixel.png" alt="GitHub" class="social-icon" />
+  </a>
+  <a href="https://www.facebook.com/profile.php?id=100006839385542" class="social-link" target="_blank" rel="noopener noreferrer">
+    <img src="/images/social/facebook-pixel.png" alt="Facebook" class="social-icon" />
+  </a>
+  <a href="mailto:youssef.charfeddine@insat.ucar.tn" class="social-link">
+    <img src="/images/social/email-pixel.png" alt="Email" class="social-icon" />
+  </a>
+  <a href="javascript:void(0);" class="social-link" onclick="showCopyNotification('53922372');">
+    <img src="/images/social/phone-pixel.png" alt="Phone Number" class="social-icon" />
+  </a>
+</div>
+
+<div id="copyNotification" class="copy-notification">
+  <span class="notification-text">Number copied to clipboard!</span>
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    let timeoutId = null;
+
+    function showCopyNotification(number) {
+      const notification = document.getElementById('copyNotification');
+      
+      if (!notification) return;
+
+      navigator.clipboard.writeText(number).then(() => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+
+        notification.classList.add('show');
+        
+        timeoutId = setTimeout(() => {
+          notification.classList.remove('show');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy number:', err);
+      });
+    }
+
+    // Make function available globally
+    window.showCopyNotification = showCopyNotification;
+
+    // Add click handlers for phone numbers
+    document.querySelectorAll('.contact-item').forEach(item => {
+      if (item.textContent.includes('number')) {
+        item.style.cursor = 'pointer';
+      }
+    });
+  });
+</script>
+
+<script define:vars={{ formConfig: FORM_CONFIG }}>
+  import { initializeForm } from '../scripts/components/form-handler';
+  initializeForm({
+    endpoint: formConfig.ENDPOINT,
+    successTimeout: formConfig.SUCCESS_TIMEOUT
+  });
+</script>

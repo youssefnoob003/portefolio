@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import './base/theme.css';
+@import './base/animations.css';
+@import './components/shared/common.css';
+@import './components/shared/buttons.css';
+@import './components/shared/sections.css';
+
+/* Global layout styles */
+main {
+  position: relative;
+  z-index: 2;
+  background: none;
+  min-height: calc(100vh - 80px);
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Only apply padding to the homepage */
+.homepage-main {
+  padding-top: 100vh;
+  margin-bottom: 0;
+}

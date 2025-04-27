@@ -1,0 +1,164 @@
+.challenge-nav {
+  padding-left: 2rem;
+  width: 25%;
+  background-color: rgba(17, 24, 39, 0.95);
+  position: fixed;
+  top: 80px;
+  left: 0;
+  max-height: calc(100vh - 80px);
+  transition: max-height 0.2s ease;
+  will-change: max-height;
+  z-index: 1;
+  border-right: 4px solid var(--primary);
+  transition: border-right 0.2s ease;
+  box-shadow: 
+    4px 0 15px rgba(111, 0, 255, 0.1),
+    inset -5px 0 15px rgba(111, 0, 255, 0.05);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  opacity: 0.8;
+}
+
+.challenge-nav-content {
+  padding: 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.challenge-nav::-webkit-scrollbar {
+  width: 8px;
+}
+
+.challenge-nav::-webkit-scrollbar-track {
+  background: rgba(17, 24, 39, 0.95);
+}
+
+.challenge-nav::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 0;
+  border: 2px solid rgba(17, 24, 39, 0.95);
+}
+
+.challenge-nav h2 {
+  color: var(--ctf-accent);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(66, 135, 245, 0.3);
+  text-transform: uppercase;
+  text-shadow: 0 0 8px var(--ctf-accent-glow);
+  letter-spacing: 2px;
+}
+
+.challenge-nav h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ctf-accent);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(66, 135, 245, 0.2);
+}
+
+.challenge-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.task-link {
+  display: block;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-out;
+  position: relative;
+  border-left: 4px solid transparent;
+  font-size: 0.9rem;
+}
+
+.task-link:hover {
+  color: var(--primary);
+  background: rgba(111, 0, 255, 0.15);
+  border-left: 4px solid var(--primary);
+  transform: translateX(4px);
+  text-shadow: 0 0 8px var(--primary);
+  box-shadow: 
+    0 0 10px rgba(111, 0, 255, 0.1),
+    inset 0 0 5px rgba(111, 0, 255, 0.05);
+}
+
+.task-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-link:hover::before {
+  width: 100%;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.task-link.active {
+  background: rgba(111, 0, 255, 0.2);
+  border-left: 4px solid var(--secondary);
+  box-shadow: 
+    0 0 15px rgba(111, 0, 255, 0.15),
+    inset 0 0 10px rgba(111, 0, 255, 0.1);
+}
+
+/* Animation keyframes */
+@keyframes borderPulse {
+  0% {
+    box-shadow: 
+      4px 0 15px rgba(111, 0, 255, 0.1),
+      inset -5px 0 15px rgba(111, 0, 255, 0.05);
+  }
+  50% {
+    box-shadow: 
+      4px 0 20px rgba(111, 0, 255, 0.2),
+      inset -5px 0 20px rgba(111, 0, 255, 0.1);
+  }
+  100% {
+    box-shadow: 
+      4px 0 15px rgba(111, 0, 255, 0.1),
+      inset -5px 0 15px rgba(111, 0, 255, 0.05);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .challenge-nav {
+    display: none; /* Hidden by default on mobile */
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 140px; /* Position below mobile nav button */
+    max-height: calc(100vh - 140px);
+    margin-bottom: 0;
+    border-right: none;
+    border-top: 4px solid var(--border);
+    border-bottom: 4px solid var(--border);
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(15px);
+    z-index: 1090;
+  }
+
+  .challenge-nav.show {
+    display: block;
+  }
+
+  .challenge-nav-content {
+    padding: 1.5rem;
+  }
+}

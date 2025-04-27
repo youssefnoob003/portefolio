@@ -1,0 +1,199 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import '../../styles/components/ctf/layout.css';
+import '../../styles/components/ctf/sidebar.css';
+import '../../styles/components/ctf/challenge-card.css';
+import '../../styles/components/ctf/responsive.css';
+import '../../styles/components/shared/grid.css';
+import '../../styles/components/ctf/background.css';
+import { DATE_CONFIG } from '../../config';
+import MobileNavScript from '../../components/MobileNavScript.astro';
+
+interface Challenge {
+  name: string;
+  category: string;
+  difficulty: string;
+}
+
+export async function getStaticPaths() {
+  const writeups = await Astro.glob('../../content/ctf-writeups/*.md');
+  
+  return writeups.map(writeup => {
+    const isEvent = true;
+    return {
+      params: { 
+        slug: writeup.file.split('/').pop()?.replace('.md', '') || ''
+      },
+      props: { 
+        isEvent,
+        content: writeup
+      }
+    };
+  });
+}
+
+const { content, isEvent } = Astro.props;
+const { Content } = content;
+const frontmatter = content.frontmatter;
+const eventSlug = Astro.params.slug;
+
+// Get all tasks for this event using a static glob pattern and filter the results
+// Instead of a dynamic template literal
+const allChallenges = await Astro.glob('../../content/ctf-writeups/**/*.md');
+const allTasks = allChallenges.filter(task => {
+  const pathParts = task.file.split('/');
+  const parentDir = pathParts[pathParts.length - 2];
+  return parentDir === eventSlug && pathParts[pathParts.length - 1] !== `${eventSlug}.md`;
+});
+
+// Create an array of dummy challenges for categories that have no challenges yet
+const dummyChallenges = [
+  { title: "Hidden Flag", category: "Web", difficulty: "Medium", points: 350, status: "solved" },
+  { title: "Backdoor Access", category: "Web", difficulty: "Hard", points: 500, status: "unsolved" },
+  { title: "Memory Corruption", category: "Binary", difficulty: "Hard", points: 450, status: "unsolved" },
+  { title: "Secret Message", category: "Crypto", difficulty: "Easy", points: 200, status: "solved" },
+  { title: "File Signature", category: "Forensics", difficulty: "Medium", points: 300, status: "unsolved" }
+];
+
+// Group tasks by category for event pages
+const tasksByCategory = {};
+
+// Add real tasks to the categories
+allTasks.forEach(task => {
+  const category = task.frontmatter.category;
+  if (!tasksByCategory[category]) tasksByCategory[category] = [];
+  
+  const taskSlug = task.file.split('/').pop()?.replace('.md', '');
+  
+  tasksByCategory[category].push({
+    ...task.frontmatter,
+    slug: taskSlug,
+    hasContent: true
+  });
+});
+
+// Handle potentially missing challenges property
+const challenges = frontmatter.challenges || [];
+
+// Default categories if no challenges are defined
+const defaultCategories = ["Web", "Crypto", "Binary", "Forensics"];
+
+// Add dummy challenges to categories that have no real challenges
+const categoriesToFill = Array.isArray(challenges) ? 
+  challenges.map(c => c.category) : 
+  defaultCategories;
+
+// Process each category
+categoriesToFill.forEach(category => {
+  if (!tasksByCategory[category]) {
+    tasksByCategory[category] = dummyChallenges
+      .filter(c => c.category === category)
+      .map(c => ({
+        ...c,
+        slug: c.title.toLowerCase().replace(/\s+/g, '-'),
+        hasContent: false
+      }));
+  }
+});
+
+// If no categories were found, add some default ones
+if (Object.keys(tasksByCategory).length === 0) {
+  defaultCategories.forEach(category => {
+    tasksByCategory[category] = dummyChallenges
+      .filter(c => c.category === category)
+      .map(c => ({
+        ...c,
+        slug: c.title.toLowerCase().replace(/\s+/g, '-'),
+        hasContent: false
+      }));
+  });
+}
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString(DATE_CONFIG.LOCALE, DATE_CONFIG.DEFAULT_FORMAT);
+}
+---
+
+<MainLayout title={`${frontmatter.title} - CTF Event`}>
+  <div class="ctf-event">
+    <aside class="challenge-nav">
+      <div class="challenge-nav-content">
+        <h2>{frontmatter.title}</h2>
+        {Object.entries(tasksByCategory).map(([category, tasks]) => (
+          <div class="category-section">
+            <h3>{category}</h3>
+            <ul class="challenge-list">
+              {tasks.map((task: any) => (
+                <li>
+                  <a 
+                    href={task.hasContent 
+                      ? `/ctf-writeups/${eventSlug}/${task.slug}`
+                      : `#${task.slug}`
+                    }
+                    class={`task-link ${task.status}`}
+                    data-has-content={task.hasContent ? "true" : "false"}
+                  >
+                    {task.title}
+                    <span class="task-points">{task.points}pts</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </aside>
+    <main class="content">
+      <article class="challenge">
+        <div class="challenge-meta">
+          <span><strong>Date:</strong> {formatDate(frontmatter.date)}</span>
+          <span><strong>Total Challenges:</strong> {Object.values(tasksByCategory).flat().length}</span>
+          <span><strong>Solved:</strong> {Object.values(tasksByCategory).flat().filter((t: any) => t.status === 'solved').length}</span>
+        </div>
+        <Content />
+      </article>
+    </main>
+  </div>
+  <MobileNavScript />
+</MainLayout>
+
+
+
+<script>
+  class SidebarManager {
+    private nav: HTMLElement;
+    private footer: HTMLElement;
+    private content: HTMLElement;
+    private observer: ResizeObserver;
+    
+    constructor() {
+      this.nav = document.querySelector('.challenge-nav')!;
+      this.footer = document.querySelector('footer')!;
+      this.content = document.querySelector('.challenge-nav-content')!;
+      
+      this.observer = new ResizeObserver(() => this.updateSidebarHeight());
+      this.observer.observe(document.body);
+      
+      window.addEventListener('scroll', () => this.updateSidebarHeight());
+      window.addEventListener('resize', () => this.updateSidebarHeight());
+    }
+    
+    private updateSidebarHeight() {
+      const footerRect = this.footer.getBoundingClientRect();
+      const navRect = this.nav.getBoundingClientRect();
+      
+      if (footerRect.top <= window.innerHeight) {
+        const newHeight = footerRect.top - 80;
+        this.nav.style.maxHeight = `${newHeight}px`;
+        this.nav.classList.add('footer-visible');
+      } else {
+        this.nav.style.maxHeight = '';
+        this.nav.classList.remove('footer-visible');
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    new SidebarManager();
+  });
+</script>

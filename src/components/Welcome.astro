@@ -1,0 +1,63 @@
+---
+import '../styles/components/welcome.css';
+---
+
+<section class="welcome-screen">
+  <div class="welcome-background"></div>
+  <div class="welcome-background-transition"></div>
+  <h1 class="welcome-text">
+    * -- WELCOME USER --
+  </h1>
+  <div class="scroll-prompt">* Press [SCROLL] to continue</div>
+</section>
+
+<script>
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function handleScroll() {
+    const currentScroll = window.scrollY;
+    const startTransition = 100; // Reduced from 300
+    const maxScroll = 700; // Reduced from 1000
+    
+    // Calculate opacity based on scroll position with delayed start
+    const opacity = currentScroll < startTransition ? 1 : 
+                   Math.max(0, 1 - (currentScroll - startTransition) / (maxScroll - startTransition));
+    
+    const transitionOpacity = currentScroll < startTransition ? 0 :
+                             Math.min(1, (currentScroll - startTransition) / (maxScroll - startTransition));
+    
+    // Get elements with proper typing
+    const welcomeText = document.querySelector('.welcome-text') as HTMLElement;
+    const scrollPrompt = document.querySelector('.scroll-prompt') as HTMLElement;
+    const welcomeBackground = document.querySelector('.welcome-background') as HTMLElement;
+    const welcomeBackgroundTransition = document.querySelector('.welcome-background-transition') as HTMLElement;
+
+    // Update welcome text and scroll prompt with smoother parallax
+    if (welcomeText && scrollPrompt) {
+      welcomeText.style.opacity = opacity.toString();
+      welcomeText.style.transform = `translateY(${currentScroll * 0.3}px)`;
+      scrollPrompt.style.opacity = opacity.toString();
+    }
+
+    // Update backgrounds
+    if (welcomeBackground && welcomeBackgroundTransition) {
+      welcomeBackground.style.opacity = opacity.toString();
+      welcomeBackgroundTransition.style.opacity = transitionOpacity.toString();
+    }
+
+    lastScrollY = currentScroll;
+    ticking = false;
+  }
+
+  // Handle scroll events with requestAnimationFrame for better performance
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(handleScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Initialize scroll handler
+  handleScroll();
+</script>

@@ -1,0 +1,40 @@
+---
+interface Props {
+  eventTitle: string;
+  eventSlug: string;
+  tasksByCategory: Record<string, any[]>;
+}
+
+const { eventTitle, eventSlug, tasksByCategory } = Astro.props;
+---
+
+<aside class="challenge-nav" id="sidebar">
+  <div class="sidebar-content">
+    <h2>{eventTitle}</h2>
+    <a href={`/ctf-writeups/${eventSlug}`} class="back-to-event">← Back to Event Overview</a>
+    
+    {Object.entries(tasksByCategory).map(([category, tasks]) => (
+      <div class="category-section">
+        <h3>{category}</h3>
+        <ul class="challenge-list">
+          {tasks.map((task: any) => (
+            <li>
+              <a 
+                href={task.hasContent 
+                  ? `/ctf-writeups/${eventSlug}/${task.slug}`
+                  : `#${task.slug}`
+                }
+                class={`task-link ${task.status} ${task.isCurrent ? 'current' : ''}`}
+                data-has-content={task.hasContent ? "true" : "false"}
+              >
+                {task.title}
+                <span class="task-points">{task.points}pts</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</aside>
+

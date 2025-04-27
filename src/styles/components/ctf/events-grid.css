@@ -1,0 +1,114 @@
+.ctf-events {
+  max-width: 1200px;
+  margin: 80px auto 0;
+  padding: 2rem;
+}
+
+.ctf-events h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 
+    2px 0 var(--surface),
+    -2px 0 var(--surface),
+    0 2px var(--surface),
+    0 -2px var(--surface),
+    1px 1px var(--surface),
+    -1px -1px var(--surface);
+}
+
+.event-card {
+  border-left: 4px solid var(--ctf-accent);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.challenges-preview {
+  color: var(--text);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(66, 135, 245, 0.1);
+  border: 1px solid var(--ctf-accent);
+}
+
+.challenges-categories {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.writeup-link {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.view-writeup {
+  color: var(--ctf-accent);
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--ctf-accent);
+  transition: all 0.2s steps(3);
+  position: relative;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.view-writeup::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(66, 135, 245, 0.1) 10px,
+    transparent 20px
+  );
+  transform: rotate(45deg);
+  animation: buttonGlow 3s steps(10) infinite;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.event-card:hover {
+  border-color: var(--ctf-yellow);
+}
+
+.event-card:hover .view-writeup {
+  background: var(--ctf-yellow);
+  color: var(--surface);
+  border-color: var(--ctf-yellow);
+  transform: translateY(-2px);
+  text-shadow: none;
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    0 0 15px var(--ctf-yellow-glow);
+}
+
+.event-card:hover .view-writeup::before {
+  opacity: 0.5;
+}
+
+@keyframes buttonGlow {
+  0% { transform: translate(-50%, -50%) rotate(45deg); }
+  100% { transform: translate(50%, 50%) rotate(45deg); }
+}

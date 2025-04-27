@@ -1,0 +1,19 @@
+---
+import '../styles/components/skill-item.css';
+
+export interface SkillItemData {
+  title: string;
+  items: string[];
+}
+
+interface Props {
+  skill: SkillItemData;
+}
+
+const { skill } = Astro.props;
+---
+
+<div class="skill-item">
+  <h3>* {skill.title}</h3>
+  {skill.items.map(item => <p>{item}</p>)}
+</div> 

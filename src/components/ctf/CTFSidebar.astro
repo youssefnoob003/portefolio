@@ -1,0 +1,87 @@
+---
+interface Props {
+  title: string;
+  categories: Record<string, any[]>;
+  eventSlug: string;
+}
+
+const { title, categories, eventSlug } = Astro.props;
+---
+
+<aside class="challenge-nav">
+  <div class="challenge-nav-content">
+    <h2>{title}</h2>
+
+    <div class="category-section">
+      <a href={`/ctf-writeups/${eventSlug}`} class="task-link">
+        <span>Back to Event Overview</span>
+      </a>
+    {Object.entries(categories).map(([category, tasks]) => (
+      <div class="category-section">
+        <h3>{category}</h3>
+        <ul class="challenge-list">
+          
+          {tasks.map((task: any) => (
+            <li>
+              <a 
+                href={task.hasContent 
+                  ? `/ctf-writeups/${eventSlug}/${task.slug}`
+                  : `#${task.slug}`
+                }
+                class={`task-link ${task.status}`}
+                data-has-content={task.hasContent ? "true" : "false"}
+              >
+                {task.title}
+                <span class="task-points">{task.points}pts</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</aside>
+
+<script>
+  class SidebarController {
+    constructor() {
+      this.initializeSidebar();
+    }
+
+    private initializeSidebar() {
+      const nav = document.querySelector('.challenge-nav');
+      const footer = document.querySelector('footer');
+      
+      if (!nav || !footer) return;
+
+      const updateHeight = () => {
+        const footerRect = footer.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const navTop = 80; // Header height
+        
+        if (footerRect.top <= viewportHeight) {
+          const newHeight = footerRect.top - navTop;
+          nav.style.maxHeight = `${newHeight}px`;
+        } else {
+          nav.style.maxHeight = `calc(100vh - ${navTop}px)`;
+        }
+      };
+
+      // Initialize and add listeners
+      updateHeight();
+      window.addEventListener('scroll', updateHeight);
+      window.addEventListener('resize', updateHeight);
+      
+      // Handle dummy challenges
+      document.querySelectorAll('.task-link[data-has-content="false"]')
+        .forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('This challenge writeup is coming soon!');
+          });
+        });
+    }
+  }
+
+  new SidebarController();
+</script>

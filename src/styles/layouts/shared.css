@@ -1,0 +1,40 @@
+.content-container {
+  margin-top: 80px;
+  position: relative;
+  padding-bottom: 100px;
+  min-height: calc(100vh - 80px - 200px);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0.8)
+  );
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  transform-origin: top center;
+  transition: transform 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    margin-top: 60px;
+    padding-bottom: 80px;
+    min-height: calc(100vh - 60px - 160px);
+    transform: scale(0.95);
+    width: calc(100% + 2rem);
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-container {
+    margin-top: 50px;
+    padding-bottom: 60px;
+    min-height: calc(100vh - 50px - 120px);
+    transform: scale(0.9);
+    width: calc(100% + 2rem);
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}

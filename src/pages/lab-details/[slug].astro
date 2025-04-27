@@ -1,0 +1,142 @@
+---
+import MainLayout from '@layouts/MainLayout.astro';
+import LabSidebar from '@components/lab/LabSidebar.astro';
+import MobileNavScript from '@components/MobileNavScript.astro';
+import '../../styles/components/shared/content.css';
+import '../../styles/components/lab/layout.css';
+import '../../styles/components/lab/sidebar.css';
+import '../../styles/components/ctf/background.css';
+
+import type { MarkdownInstance } from 'astro';
+
+interface LabFrontmatter {
+  title: string;
+  date: string;
+  description: string;
+  technologies: string[];
+}
+
+type Lab = MarkdownInstance<{
+  frontmatter: LabFrontmatter;
+}>;
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+export async function getStaticPaths(): Promise<Array<{params: {slug: string}, props: {lab: Lab}}>> {
+  const labs: Lab[] = await Astro.glob<Lab>('../../content/labs/*.md');
+  return labs.map((lab: Lab) => ({
+    params: {
+      slug: lab.file.split('/').pop()?.replace('.md', '') || ''
+    },
+    props: { lab }
+  }));
+}
+
+interface Props {
+  lab: Lab;
+}
+
+const { lab } = Astro.props;
+const { Content } = lab;
+const rawHeadings = lab.getHeadings();
+const headings = rawHeadings.map((heading: Heading) => ({
+  title: heading.text,
+  slug: heading.slug
+}));
+const labSlug = Astro.params.slug;
+---
+
+<MainLayout title={`${lab.frontmatter.title} - Lab Details`}>
+  <div class="ctf-event">
+    <LabSidebar 
+      title={lab.frontmatter.title}
+      sections={headings}
+      labSlug={labSlug}
+    />
+    <main class="content">
+      <article class="challenge">
+        <div class="challenge-meta">
+          <span><strong>Technologies:</strong> {lab.frontmatter.technologies.join(', ')}</span>
+          <span><strong>Date:</strong> {new Date(lab.frontmatter.date).toLocaleDateString()}</span>
+        </div>
+        <Content />
+      </article>
+    </main>
+  </div>
+  <MobileNavScript />
+</MainLayout>
+
+<script>
+  class SidebarManager {
+    private nav: HTMLElement;
+    private footer: HTMLElement;
+    private content: HTMLElement;
+    private observer: ResizeObserver;
+    private mobileToggle: HTMLElement;
+    
+    constructor() {
+      this.nav = document.querySelector('.challenge-nav')!;
+      this.footer = document.querySelector('footer')!;
+      this.content = document.querySelector('.challenge-nav-content')!;
+      this.mobileToggle = document.querySelector('#mobileNavToggle')!;
+      
+      this.observer = new ResizeObserver(() => this.updateSidebarHeight());
+      this.observer.observe(document.body);
+      
+      window.addEventListener('scroll', () => this.updateSidebarHeight());
+      window.addEventListener('resize', () => this.updateSidebarHeight());
+      
+      // Mobile navigation toggle
+      this.mobileToggle.addEventListener('click', () => {
+        this.nav.classList.toggle('show');
+        this.mobileToggle.classList.toggle('active');
+        this.mobileToggle.setAttribute('aria-expanded', this.nav.classList.contains('show').toString());
+      });
+      
+      // Close on clicking outside
+      document.addEventListener('click', (e) => {
+        if (!this.nav.contains(e.target as Node) && 
+            !this.mobileToggle.contains(e.target as Node) && 
+            this.nav.classList.contains('show')) {
+          this.nav.classList.remove('show');
+          this.mobileToggle.classList.remove('active');
+          this.mobileToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Close on clicking a link (mobile only)
+      if (window.innerWidth <= 768) {
+        const links = this.nav.querySelectorAll('a');
+        links.forEach(link => {
+          link.addEventListener('click', () => {
+            this.nav.classList.remove('show');
+            this.mobileToggle.classList.remove('active');
+            this.mobileToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    }
+    
+    private updateSidebarHeight() {
+      const footerRect = this.footer.getBoundingClientRect();
+      const navRect = this.nav.getBoundingClientRect();
+      
+      if (footerRect.top <= window.innerHeight) {
+        const newHeight = footerRect.top - 80;
+        this.nav.style.maxHeight = `${newHeight}px`;
+        this.nav.classList.add('footer-visible');
+      } else {
+        this.nav.style.maxHeight = '';
+        this.nav.classList.remove('footer-visible');
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    new SidebarManager();
+  });
+</script>

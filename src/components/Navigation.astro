@@ -1,0 +1,42 @@
+---
+import '../styles/components/navigation.css';
+import { ROUTES } from '../config';
+---
+
+<nav>
+  <div class="nav-links">
+    <a href={ROUTES.HOME} class="nav-item">Welcome</a>
+    <a href={ROUTES.PROJECTS} class="nav-item">Projects</a>
+    <a href={ROUTES.LABS} class="nav-item">Labs</a>
+    <a href={ROUTES.CTF_EVENTS} class="nav-item">CTF</a>
+    <a href={ROUTES.CONTACT} class="nav-item">Contact</a>
+  </div>
+  <img src="/images/nyan.gif" alt="" class="nav-nyan" aria-hidden="true" />
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      const element = item as HTMLElement;
+      element.addEventListener('mouseenter', () => {
+        element.style.transform = 'scale(1.1)';
+      });
+      element.addEventListener('mouseleave', () => {
+        element.style.transform = 'scale(1)';
+      });
+    });
+    
+    // Add active class to current page navigation item
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      const navLink = item as HTMLAnchorElement;
+      const href = navLink.getAttribute('href');
+      
+      if (href === currentPath || 
+          (href !== '/' && currentPath.startsWith(href || '')) ||
+          (href === '/' && currentPath === '/index.html')) {
+        navLink.classList.add('active');
+      }
+    });
+  });
+</script>
