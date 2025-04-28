@@ -67,6 +67,86 @@
   height: 9rem;
 }
 
+.cv-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.cv-buttons .action-button {
+  width: 220px; /* Fixed width for both buttons */
+  text-align: center;
+  padding: 1rem 1rem;
+  background: var(--surface);
+  color: var(--primary);
+  text-decoration: none;
+  border: var(--pixel-border) solid var(--primary);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s steps(3);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  image-rendering: pixelated;
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.6),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+.cv-buttons .action-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 255, 212, 0.1) 10px,
+    transparent 20px
+  );
+  transform: rotate(45deg);
+  animation: buttonGlow 3s steps(10) infinite;
+  opacity: 0;
+  mix-blend-mode: screen;
+  image-rendering: pixelated;
+}
+
+.cv-buttons .action-button:hover {
+  background: var(--primary);
+  color: var(--main-bg);
+  transform: translateY(-2px);
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px var(--primary);
+}
+
+.cv-buttons .action-button:hover::before {
+  opacity: 0.5;
+}
+
+.cv-buttons .action-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.8),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.8),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+@keyframes buttonGlow {
+  0% {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  100% {
+    transform: translate(150%, 150%) rotate(45deg);
+  }
+}
+
 @media (max-width: 768px) {
   .about-content {
     gap: 2rem;
@@ -76,12 +156,24 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     padding: 0.5rem;
-
   }
+
   .bio-paragraph {
     font-size: 0.85rem;
     line-height: 1.6;
     text-align: center;
+  }
+
+  .cv-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cv-buttons .action-button {
+    width: 220px; /* Keep same width on mobile */
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
   }
 }
 
