@@ -1,6 +1,5 @@
 .section {
   margin: 2rem 0;
-  padding: 2rem;
   background-color: rgba(0, 0, 0, 0.75);
   border: var(--pixel-border) solid var(--primary);
   box-shadow: 0 0 15px rgba(0, 255, 212, 0.1);
@@ -155,7 +154,7 @@
 @media screen and (max-width: 768px) {
   .section {
     padding: 1rem;
-    margin: 1rem 0;
+    margin: 1rem;
   }
 
   .title {
@@ -181,7 +180,7 @@
   .ctf-button {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
-    margin-left: 0; // Remove margin that was pushing button
+    margin-left: 0; 
   }
   
   .button-container {
@@ -281,7 +280,7 @@
   .ctf-button {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
-    margin-left: 0; // Remove margin that was pushing button
+    margin-left: 0; 
   }
   
 }
